@@ -16,7 +16,12 @@ export default defineConfig({
     }),
     dts({
       insertTypesEntry: true,
-      exclude: ['**/*.stories.ts', '**/*.test.tsx'],
+      exclude: [
+        '**/*.stories.ts',
+        '**/*.stories.tsx',
+        '**/*.test.ts',
+        '**/*.test.tsx',
+      ],
     }),
     viteStaticCopy({
       targets: [

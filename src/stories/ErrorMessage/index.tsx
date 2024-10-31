@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-
 import CaptionSVG from './Caption.svg?react';
 
 interface IErrorMessageProps {
