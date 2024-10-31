@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { useState } from '@storybook/preview-api';
 
-import DefaultTextField from '@/stories/TextField';
+import DefaultTextField from '@/components/TextField';
 
 const meta = {
   title: 'Input/DefaultTextField',
