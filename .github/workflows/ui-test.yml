@@ -3,33 +3,28 @@ name: 'UI TEST'
 on: push
 
 jobs:
-  accessbility-test:
+  accessibility-test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-
       - name: Install dependencies
-        run: npm install --immutable
-
+        run: yarn
       - name: Install Playwright
         run: npx playwright install --with-deps
-
       - name: Build Storybook
-        run: npm build-storybook --quiet
-
+        run: yarn build-storybook --quiet
       - name: Serve Storybook and run tests
         run: |
           npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
             "npx http-server storybook-static --port 6006 --silent" \
-            "npx wait-on tcp:6006 && npm test-storybook"
+            "npx wait-on tcp:127.0.0.1:6006 && yarn test-storybook"
 
   chromatic:
-    needs: accessbility-test # 위 test 부분이 끝나면 chromatic 배포하는 액션하는 의존성 설정
+    needs: accessibility-test
     name: Run Chromatic
     runs-on: ubuntu-latest
     steps:
@@ -37,15 +32,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - name: Install dependencies
-        run: npm install --immutable
-
+        # ⚠️ See your package manager's documentation for the correct command to install dependencies in a CI environment.
+        run: npm ci
       - name: Run Chromatic
         uses: chromaui/action@latest
         with:
+          # ⚠️ Make sure to configure a `CHROMATIC_PROJECT_TOKEN` repository secret
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
