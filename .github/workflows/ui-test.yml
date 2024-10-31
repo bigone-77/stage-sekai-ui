@@ -14,13 +14,13 @@ jobs:
           node-version-file: '.nvmrc'
 
       - name: Install dependencies
-        run: npm install --immutable # PnP 환경에서 의존성 설치 (npm Berry)
+        run: npm install --immutable
 
       - name: Install Playwright
-        run: npm playwright install --with-deps # Playwright를 npm으로 설치
+        run: npx playwright install --with-deps
 
       - name: Build Storybook
-        run: npm build-storybook --quiet # Storybook 빌드
+        run: npm build-storybook --quiet
 
       - name: Serve Storybook and run tests
         run: |
