@@ -1,0 +1,51 @@
+name: 'UI TEST'
+
+on: push
+
+jobs:
+  accessbility-test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install dependencies
+        run: npm install --immutable # PnP 환경에서 의존성 설치 (npm Berry)
+
+      - name: Install Playwright
+        run: npm playwright install --with-deps # Playwright를 npm으로 설치
+
+      - name: Build Storybook
+        run: npm build-storybook --quiet # Storybook 빌드
+
+      - name: Serve Storybook and run tests
+        run: |
+          npx concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
+            "npx http-server storybook-static --port 6006 --silent" \
+            "npx wait-on tcp:6006 && npm test-storybook"
+
+  chromatic:
+    needs: accessbility-test # 위 test 부분이 끝나면 chromatic 배포하는 액션하는 의존성 설정
+    name: Run Chromatic
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --immutable
+
+      - name: Run Chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
