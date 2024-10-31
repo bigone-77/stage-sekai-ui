@@ -21,12 +21,17 @@ export default defineConfig({
         '**/*.stories.tsx',
         '**/*.test.ts',
         '**/*.test.tsx',
+        'src/stories/**/*',
       ],
     }),
     viteStaticCopy({
       targets: [
         {
           src: 'src/index.css',
+          dest: '',
+        },
+        {
+          src: 'src/assets',
           dest: '',
         },
       ],
@@ -36,7 +41,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.tsx'),
       fileName: (format) => `index.${format}.js`,
-      name: 'stranger-storybook',
+      name: 'stage-sekai-ui',
     },
     rollupOptions: {
       external: ['react', 'react-dom'],

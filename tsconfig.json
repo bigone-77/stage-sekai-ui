@@ -27,5 +27,6 @@
     }
   },
   "include": ["src", "svg.d.ts"],
+  "exclude": ["src/stories"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from 'react';
 
 import BlindSVG from './Blind.svg?react';
 
-import ErrorMessage from '../ErrorMessage';
+import ErrorMessage from '../../components/ErrorMessage';
 
 interface IDefaultTextFieldProps {
   htmlFor?: string;
