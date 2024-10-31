@@ -45,4 +45,7 @@ export default defineConfig({
     sourcemap: true,
     emptyOutDir: true,
   },
+  resolve: {
+    alias: [{ find: '@', replacement: '/src' }],
+  },
 });
